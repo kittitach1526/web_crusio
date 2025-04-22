@@ -15,12 +15,12 @@ admin_db= TinyDB('admin.json')
 admin_query = Query()
 
 
-# หน้า login
-from flask import session, redirect, url_for, request, render_template
-from tinydb import TinyDB, Query
+# # หน้า login
+# from flask import session, redirect, url_for, request, render_template
+# from tinydb import TinyDB, Query
 
-db = TinyDB('db.json')
-User = Query()
+# db = TinyDB('db.json')
+# User = Query()
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
