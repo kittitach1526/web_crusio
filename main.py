@@ -173,5 +173,6 @@ def search():
         results = results_db1 + results_db2
 
     return render_template("search.html", results=results)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
