@@ -39,15 +39,15 @@
       font-size: 1.1rem;
       border-radius: 999px;
       font-weight: 500;
-      background-color: #fff;
+      background-color:rgb(123, 198, 233);
       color: #000;
       transition: 0.3s;
       text-decoration: none;
     }
 
     .btn-main:hover {
-      background-color: #444;
-      color: #fff;
+      background-color: #fff;
+      color: #000;
     }
 
     .section-dark {
@@ -106,13 +106,6 @@
   </div>
 </section>
 
-<!-- FEATURE / INFO SECTION -->
-<section class="section-dark">
-  <h2>Designed and Developed</h2>
-  <h2>By</h2>
-  <h3>Silenx Gravehart (Designer) & Sapphxre Vongolay (DEV)</h3>
-</section>
-
 <canvas id="snow-canvas"></canvas>
 <script>
   const canvas = document.getElementById('snow-canvas');
@@ -123,7 +116,6 @@
   canvas.width = width;
   canvas.height = height;
 
-  // โหลดหลายภาพเกล็ดหิมะ
   const snowflakeSources = [
     "{{ url_for('static', filename='pic/snow1.png') }}",
     "{{ url_for('static', filename='pic/snow2.png') }}",
@@ -204,7 +196,6 @@
   });
 </script>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
