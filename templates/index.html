@@ -85,13 +85,15 @@
         /* Fixed Background Image */
         .hero-image {
             position: fixed;
-            top: 0;
+            top: 20px;
             left: 0;
             width: 100%;
-            height: 100vh;
-            object-fit: cover;
+            height: 100vh; /* ให้ภาพสูงเท่าหน้าจอ */
+            object-fit: cover; /* ให้ครอบพื้นที่โดยไม่ยืดผิดสัดส่วน */
             z-index: -1;
-        }
+          }
+          
+          
 
         .caveat-gl2 {
             font-family: "Caveat", cursive;
@@ -103,19 +105,18 @@
 </head>
 <body>
     <!-- Image at the top -->
-    <img src="{{ url_for('static', filename='pic/VGL.png') }}" class="hero-image" alt="Background Image">
+    <img src="{{ url_for('static', filename='pic/c4.png') }}" class="hero-image" alt="Background Image">
 
     <!-- หิมะ -->
     <canvas id="snow-canvas"></canvas>
 
     <!-- เนื้อหา -->
     <div class="container py-5 position-relative" style="z-index: 1;">
-        <h1 class="text-center mb-4 text-white caveat-gl2">Vongolay</h1>
         <div class="row g-4">
             {% for member in members %}
             <div class="col-12">
                 <div class="card custom-card shadow-lg p-3">
-                    <img src="{{ url_for('static',filename='pic/VongolaySuit.png') }}" class="img-fluid me-3" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ member.name }}">
+                    <img src="{{ url_for('static',filename='pic/Crusio.png') }}" class="img-fluid me-3" style="width: 100px; height: 100px; object-fit: cover;" alt="{{ member.name }}">
                     <div class="card-body">
                         <div>
                             <h5 class="card-title mb-1 text-white">{{ member.name }}</h5>
@@ -135,61 +136,91 @@
     <script>
         const canvas = document.getElementById('snow-canvas');
         const ctx = canvas.getContext('2d');
-
+      
         let width = window.innerWidth;
         let height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
-
+      
+        const snowflakeSources = [
+          "{{ url_for('static', filename='pic/snow1.png') }}",
+          "{{ url_for('static', filename='pic/snow2.png') }}",
+          "{{ url_for('static', filename='pic/snow3.png') }}"
+        ];
+      
+        const snowflakeImages = [];
+        let imagesLoaded = 0;
+      
+        for (let src of snowflakeSources) {
+          const img = new Image();
+          img.src = src;
+          img.onload = () => {
+            imagesLoaded++;
+            if (imagesLoaded === snowflakeSources.length) {
+              initSnow();
+            }
+          };
+          snowflakeImages.push(img);
+        }
+      
         const snowflakes = [];
-
+      
         function createSnowflake() {
-            return {
-                x: Math.random() * width,
-                y: Math.random() * height,
-                radius: Math.random() * 3 + 1,
-                speedY: Math.random() * 1 + 0.5,
-                speedX: Math.random() * 0.5 - 0.25
-            };
+          const imageIndex = Math.floor(Math.random() * snowflakeImages.length);
+          const size = Math.random() * 20 + 10;
+      
+          return {
+            x: Math.random() * width,
+            y: Math.random() * height,
+            size: size,
+            speedY: Math.random() * 1 + 0.5,
+            speedX: Math.random() * 0.5 - 0.25,
+            rotation: Math.random() * 360,
+            rotationSpeed: Math.random() * 2 - 1,
+            image: snowflakeImages[imageIndex]
+          };
         }
-
-        for (let i = 0; i < 100; i++) {
+      
+        function initSnow() {
+          for (let i = 0; i < 70; i++) {
             snowflakes.push(createSnowflake());
+          }
+          drawSnowflakes();
         }
-
+      
         function drawSnowflakes() {
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            for (const flake of snowflakes) {
-                ctx.moveTo(flake.x, flake.y);
-                ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-            }
-            ctx.fill();
-            updateSnowflakes();
-            requestAnimationFrame(drawSnowflakes);
+          ctx.clearRect(0, 0, width, height);
+          for (const flake of snowflakes) {
+            ctx.save();
+            ctx.translate(flake.x, flake.y);
+            ctx.rotate((flake.rotation * Math.PI) / 180);
+            ctx.drawImage(flake.image, -flake.size / 2, -flake.size / 2, flake.size, flake.size);
+            ctx.restore();
+          }
+          updateSnowflakes();
+          requestAnimationFrame(drawSnowflakes);
         }
-
+      
         function updateSnowflakes() {
-            for (const flake of snowflakes) {
-                flake.y += flake.speedY;
-                flake.x += flake.speedX;
-                if (flake.y > height) {
-                    flake.y = 0;
-                    flake.x = Math.random() * width;
-                }
+          for (const flake of snowflakes) {
+            flake.y += flake.speedY;
+            flake.x += flake.speedX;
+            flake.rotation += flake.rotationSpeed;
+      
+            if (flake.y > height) {
+              flake.y = -flake.size;
+              flake.x = Math.random() * width;
             }
+          }
         }
-
+      
         window.addEventListener('resize', () => {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
+          width = window.innerWidth;
+          height = window.innerHeight;
+          canvas.width = width;
+          canvas.height = height;
         });
-
-        drawSnowflakes();
-    </script>
+      </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -33,7 +33,7 @@ def login():
 
         if user:
             session['logged_in'] = True
-            return redirect(url_for('select'))
+            return redirect(url_for('admin'))
         else:
             flash('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', 'danger')
 
@@ -45,7 +45,7 @@ def select():
         if not session.get('logged_in'):
             return redirect(url_for('login'))
 
-    return render_template('select_mode.html')
+    return render_template('admin.html')
 
 # ออกจากระบบ
 @app.route('/logout')
